@@ -1,0 +1,4 @@
+@EndUserText.label: 'Serv.Def. - HHDV Item Raw'
+define service Zui_hhdv_item_raw {
+  expose zi_hhdv_ITEM_raw;
+}

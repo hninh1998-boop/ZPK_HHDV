@@ -1,0 +1,6 @@
+@EndUserText.label: 'Serv.Def. - HHDV'
+define service Zui_hhdv {
+  expose zc_hhdv_head      as HHDVHead;
+  expose zc_hhdv_item      as HHDVItem;
+  expose ZI_COMPANYCODE_VH as CompanyCodeVH;
+}

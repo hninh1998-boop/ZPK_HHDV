@@ -1,0 +1,4 @@
+@EndUserText.label: 'Serv.Def. - Auth HHDV'
+define service Zui_auth_hhdv {
+  expose ZC_AUTH_HHDV;
+}

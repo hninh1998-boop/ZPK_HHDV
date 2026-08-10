@@ -1,0 +1,4 @@
+@EndUserText.label: 'Serv.Def. - HHDV RP'
+define service Zui_hhdv_rp {
+  expose zce_hhdv_rp as HHDVRP;
+}

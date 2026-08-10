@@ -1,0 +1,34 @@
+{
+  "formatVersion": "2",
+  "header": {
+    "description": "An SAP Fiori application.",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "appType": "ui5",
+    "catalogId": "SAP_TC_UI5_REPO_UIAD",
+    "targetMappingTitle": "Auth HHDV"
+  },
+  "ui5AppDetails": {
+    "appId": "zauthhhdvov2"
+  },
+  "navigation": {
+    "targetMappingId": "UI5R_68FCE5EB6E3A01B5F78DBEA1124B243893F323E4_TM",
+    "semanticObject": "zauth_hhdv_ov2",
+    "action": "display",
+    "desktop": true,
+    "tablet": true,
+    "phone": true
+  },
+  "tiles": [
+    {
+      "id": "UI5R_68FCE5EB6E3A01B5F78DBEA1124B243893F323E4_AL",
+      "tileType": "static",
+      "isDefault": true,
+      "standard": {
+        "title": "Auth HHDV"
+      }
+    }
+  ]
+}

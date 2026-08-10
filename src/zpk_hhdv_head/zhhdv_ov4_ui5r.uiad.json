@@ -1,0 +1,34 @@
+{
+  "formatVersion": "2",
+  "header": {
+    "description": "An SAP Fiori application.",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "appType": "ui5",
+    "catalogId": "SAP_TC_UI5_REPO_UIAD",
+    "targetMappingTitle": "Hóa đơn HHDV bán ra"
+  },
+  "ui5AppDetails": {
+    "appId": "zhhdvov4"
+  },
+  "navigation": {
+    "targetMappingId": "UI5R_45F08C51333B2350BC3AA4FBB3EDD9DB4D73B5A2_TM",
+    "semanticObject": "zhhdv_ov4",
+    "action": "display",
+    "desktop": true,
+    "tablet": true,
+    "phone": true
+  },
+  "tiles": [
+    {
+      "id": "UI5R_45F08C51333B2350BC3AA4FBB3EDD9DB4D73B5A2_AL",
+      "tileType": "static",
+      "isDefault": true,
+      "standard": {
+        "title": "Hóa đơn HHDV bán ra"
+      }
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "formatVersion": "2",
+  "header": {
+    "description": "An SAP Fiori application.",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "appType": "ui5",
+    "catalogId": "SAP_TC_UI5_REPO_UIAD",
+    "targetMappingTitle": "HHDV Item Raw"
+  },
+  "ui5AppDetails": {
+    "appId": "zhhdvirov2"
+  },
+  "navigation": {
+    "targetMappingId": "UI5R_1A78A45F19FC3614242BF018D483FD56A12C9690_TM",
+    "semanticObject": "zhhdv_ir_ov2",
+    "action": "display",
+    "desktop": true,
+    "tablet": true,
+    "phone": true
+  },
+  "tiles": [
+    {
+      "id": "UI5R_1A78A45F19FC3614242BF018D483FD56A12C9690_AL",
+      "tileType": "static",
+      "isDefault": true,
+      "standard": {
+        "title": "HHDV Item Raw"
+      }
+    }
+  ]
+}

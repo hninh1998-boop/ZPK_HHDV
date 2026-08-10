@@ -1,0 +1,65 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Cons.View - HHDV Header'
+@Metadata.ignorePropagatedAnnotations: true
+@Metadata.allowExtensions: true
+define root view entity zc_hhdv_head
+  provider contract transactional_query
+  as projection on zi_hhdv_head
+{
+  key InvoiceId,
+      InvoiceType,
+      AdjustmentType,
+      TemplateCode,
+      InvoiceSeri,
+      InvoiceNumber,
+      InvoiceNo,
+      Currency,
+      Total,
+      IssueDate,
+      IssueDateStr,
+      State,
+      RequestDate,
+      Description,
+      BuyerIdNo,
+      StateCode,
+      SubscriberNumber,
+      PaymentStatus,
+      ViewStatus,
+      DownloadStatus,
+      ExchangeStatus,
+      NumOfExchange,
+      CreateTime,
+      ContractId,
+      ContractNo,
+      SupplierTaxCode,
+      BuyerTaxCode,
+      TotalBeforeTax,
+      TaxAmount,
+      TaxRate,
+      PaymentMethod,
+      PaymentTime,
+      CustomerId,
+      NoField,
+      PaymentStatusName,
+      BuyerName,
+      TransactionUuid,
+      OriginalInvoiceId,
+      ListProduct,
+      FileName,
+      BuyerUnitName,
+      BuyerCode,
+      BuyerAddress,
+      ExchangeRate,
+      ListInfoUpdate,
+      ErrorCode,
+      ErrorDescription,
+      InvoiceStatus,
+      ReturnInv,
+
+      Createdbyuser,
+      Createddate,
+      Changedbyuser,
+      Changeddate,
+      /* Associations */
+      _Item : redirected to composition child zc_hhdv_item
+}

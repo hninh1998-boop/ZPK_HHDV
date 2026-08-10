@@ -1,0 +1,146 @@
+managed implementation in class zbp_i_hhdv_head unique;
+strict ( 2 );
+
+with draft;
+
+define behavior for zi_hhdv_head alias HHDVHead
+persistent table ztb_hhdv_head
+draft table ztb_hhdv_head_d
+etag master Changedbyuser
+lock master total etag Changedbyuser
+authorization master ( instance )
+//etag master <field_name>
+with additional save
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( readonly ) InvoiceId, Createdbyuser, Createddate, Changedbyuser, Changeddate;
+  association _Item { with draft; create; }
+
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Edit;
+  draft action Resume;
+  draft determine action Prepare;
+
+  static action LayDuLieu parameter zabs_laydulieu_popup;
+
+  static action UdtInvoiceStatus parameter zabs_udtinvoicestatus_popup;
+
+  action UdtReturnInv result [1] $self;
+
+  mapping for ztb_hhdv_head
+    {
+      InvoiceId         = invoice_id;
+      InvoiceType       = invoice_type;
+      AdjustmentType    = adjustment_type;
+      TemplateCode      = template_code;
+      InvoiceSeri       = invoice_seri;
+      InvoiceNumber     = invoice_number;
+      InvoiceNo         = invoice_no;
+      Currency          = currency;
+      Total             = total;
+      IssueDate         = issue_date;
+      IssueDateStr      = issue_date_str;
+      State             = state;
+      RequestDate       = request_date;
+      Description       = description;
+      BuyerIdNo         = buyer_id_no;
+      StateCode         = state_code;
+      SubscriberNumber  = subscriber_number;
+      PaymentStatus     = payment_status;
+      ViewStatus        = view_status;
+      DownloadStatus    = download_status;
+      ExchangeStatus    = exchange_status;
+      NumOfExchange     = num_of_exchange;
+      CreateTime        = create_time;
+      ContractId        = contract_id;
+      ContractNo        = contract_no;
+      SupplierTaxCode   = supplier_tax_code;
+      BuyerTaxCode      = buyer_tax_code;
+      TotalBeforeTax    = total_before_tax;
+      TaxAmount         = tax_amount;
+      TaxRate           = tax_rate;
+      PaymentMethod     = payment_method;
+      PaymentTime       = payment_time;
+      CustomerId        = customer_id;
+      NoField           = no_field;
+      PaymentStatusName = payment_status_name;
+      BuyerName         = buyer_name;
+      TransactionUuid   = transaction_uuid;
+      OriginalInvoiceId = original_invoice_id;
+      ListProduct       = list_product;
+      FileName          = file_name;
+      BuyerUnitName     = buyer_unit_name;
+      BuyerCode         = buyer_code;
+      BuyerAddress      = buyer_address;
+      ExchangeRate      = exchange_rate;
+      ListInfoUpdate    = list_info_update;
+      ErrorCode         = error_code;
+      ErrorDescription  = error_description;
+      InvoiceStatus     = invoice_status;
+      ReturnInv         = return_inv;
+      Createdbyuser     = createdbyuser;
+      Createddate       = createddate;
+      Changedbyuser     = changedbyuser;
+      Changeddate       = changeddate;
+    }
+}
+
+define behavior for zi_hhdv_ITEM alias HHDVItem
+persistent table ztb_hhdv_item
+draft table ztb_hhdv_item_d
+lock dependent by _Head
+authorization dependent by _Head
+//etag master <field_name>
+with additional save
+{
+  update;
+  delete;
+  field ( readonly ) InvoiceId, LineNumber, Createdbyuser, Createddate, Changedbyuser, Changeddate;
+  association _Head { with draft; }
+
+  mapping for ztb_hhdv_item
+    {
+      InvoiceId                   = invoice_id;
+      LineNumber                  = line_number;
+      Selection                   = selection;
+      ItemType                    = item_type;
+      ItemCode                    = item_code;
+      ItemName                    = item_name;
+      UnitCode                    = unit_code;
+      UnitName                    = unit_name;
+      Currency                    = currency;
+      UnitPrice                   = unit_price;
+      Quantity                    = quantity;
+      ItemTotalAmtWithoutVat      = item_total_amt_without_vat;
+      ItemTotalAmtWithVat         = item_total_amt_with_vat;
+      ItemTotalAmtAfterDiscount   = item_total_amt_after_discount;
+      ItemServiceChargePercentage = item_service_charge_percentage;
+      ItemServiceChargeAmount     = item_service_charge_amount;
+      ItemExciseTaxPercentage     = item_excise_tax_percentage;
+      ItemExciseTaxAmount         = item_excise_tax_amount;
+      VatPercentage               = vat_percentage;
+      VatAmount                   = vat_amount;
+      Discount                    = discount;
+      Discount2                   = discount2;
+      ItemDiscount                = item_discount;
+      ItemNote                    = item_note;
+      BatchNo                     = batch_no;
+      ExpDate                     = exp_date;
+      IsIncreaseItem              = is_increase_item;
+      AdjustRatio                 = adjust_ratio;
+      AdjustIndex                 = adjust_index;
+      AdjustFactors               = adjust_factors;
+      DiscountAmount              = discount_amount;
+      DiscountAmount2             = discount_amount2;
+      SpecialInfo                 = special_info;
+      DiscountValue               = discount_value;
+      DiscountValue2              = discount_value2;
+      Createdbyuser               = createdbyuser;
+      Createddate                 = createddate;
+      Changedbyuser               = changedbyuser;
+      Changeddate                 = changeddate;
+    }
+}

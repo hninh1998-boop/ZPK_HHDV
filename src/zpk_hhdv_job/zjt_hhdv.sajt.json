@@ -1,0 +1,31 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "ZJT_HHDV",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "catalogName": "ZJC_HHDV"
+  },
+  "parameters": {
+    "valueRangesParameters": [
+      {
+        "name": "COMPCODE",
+        "valueRanges": []
+      },
+      {
+        "name": "END",
+        "valueRanges": []
+      },
+      {
+        "name": "ID",
+        "valueRanges": []
+      },
+      {
+        "name": "START",
+        "valueRanges": []
+      }
+    ]
+  }
+}

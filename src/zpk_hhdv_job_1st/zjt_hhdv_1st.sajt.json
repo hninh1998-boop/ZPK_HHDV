@@ -1,0 +1,19 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "ZJT_HHDV_1ST",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "catalogName": "ZJC_HHDV_1ST"
+  },
+  "parameters": {
+    "valueRangesParameters": [
+      {
+        "name": "ID",
+        "valueRanges": []
+      }
+    ]
+  }
+}

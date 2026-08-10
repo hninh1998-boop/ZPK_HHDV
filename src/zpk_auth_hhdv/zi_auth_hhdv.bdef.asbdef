@@ -1,0 +1,22 @@
+managed implementation in class zbp_i_auth_hhdv unique;
+strict ( 2 );
+
+define behavior for zi_auth_hhdv //alias <alias_name>
+persistent table ztb_auth_hhdv
+lock master
+authorization master ( instance )
+//etag master <field_name>
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( readonly : update ) CompanyCode;
+
+  mapping for ztb_auth_hhdv
+    {
+      CompanyCode     = company_code;
+      Username        = username;
+      Password        = password;
+      SupplierTaxCode = supplier_tax_code;
+    }
+}

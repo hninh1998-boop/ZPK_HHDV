@@ -1276,7 +1276,9 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
     IF sy-subrc = 0.
       IF ls_tkdu-tkdu CP '6*'.
       ELSE.
-        cs_result-DoanhSoTransCur = is_base-doanhsotranscur_raw.
+        IF ls_tkdu-debitcreditcode = 'S'.
+          cs_result-DoanhSoTransCur = is_base-doanhsotranscur_raw.
+        ENDIF.
       ENDIF.
     ENDIF.
 
@@ -1364,8 +1366,17 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
       CASE WHEN c~OffsettingAccount = '3331001000' THEN c~GLAccount          ELSE ' ' END AS tkdu,
       CASE WHEN c~OffsettingAccount = '3331001000' THEN d~PersonFullName     ELSE ' ' END AS UserHachToan,
 
-      c~AccountingDocumentType
+      c~AccountingDocumentType,
+      c~DebitCreditCode
     INTO TABLE @et_acct_doc.
+
+    SORT et_acct_doc BY invoiceid companycode kyhieumauhoadon kyhieuhd sohd einvlineitem
+                         chungtu       DESCENDING
+                         tk            DESCENDING
+                         tkdu          DESCENDING
+                         userhachtoan  DESCENDING.
+    DELETE ADJACENT DUPLICATES FROM et_acct_doc COMPARING invoiceid companycode kyhieumauhoadon kyhieuhd sohd einvlineitem.
+
   ENDMETHOD.
 
 

@@ -62,6 +62,7 @@ CLASS zcl_ce_hhdv_rp_top DEFINITION
              tkdu                   TYPE I_AccountingDocumentJournal-GLAccount,
              UserHachToan           TYPE I_BusinessUserBasic-PersonFullName,
              AccountingDocumentType TYPE I_AccountingDocumentJournal-AccountingDocumentType,
+             DebitCreditCode        TYPE I_AccountingDocumentJournal-DebitCreditCode,
            END OF ty_acct_doc,
            tt_acct_doc TYPE STANDARD TABLE OF ty_acct_doc WITH EMPTY KEY.
 

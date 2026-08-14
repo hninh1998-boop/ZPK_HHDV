@@ -35,6 +35,7 @@ annotate entity zc_hhdv_head with
   @EndUserText.label: 'InvoiceId'
   @UI.lineItem: [{ position: 10 }]
   @UI.identification: [{ position: 10 }]
+  @UI.selectionField: [{ position: 50 }]
   @UI.fieldGroup: [{ position: 10, type: #STANDARD, qualifier: 'QFBasicInfo' }]
   InvoiceId;
   @EndUserText.label: 'InvoiceType'
@@ -45,6 +46,7 @@ annotate entity zc_hhdv_head with
   @EndUserText.label: 'AdjustmentType'
   @UI.lineItem: [{ position: 30 }]
   @UI.identification: [{ position: 30 }]
+  @UI.selectionField: [{ position: 20 }]
   @UI.fieldGroup: [{ position: 30, type: #STANDARD, qualifier: 'QFBasicInfo' }]
   AdjustmentType;
   @EndUserText.label: 'TemplateCode'
@@ -65,6 +67,7 @@ annotate entity zc_hhdv_head with
   @EndUserText.label: 'InvoiceNo'
   @UI.lineItem: [{ position: 70 }]
   @UI.identification: [{ position: 70 }]
+  @UI.selectionField: [{ position: 30 }]
   @UI.fieldGroup: [{ position: 70, type: #STANDARD, qualifier: 'QFBasicInfo' }]
   InvoiceNo;
   @EndUserText.label: 'Currency'
@@ -85,6 +88,7 @@ annotate entity zc_hhdv_head with
   @EndUserText.label: 'IssueDateStr'
   @UI.lineItem: [{ position: 110 }]
   @UI.identification: [{ position: 110 }]
+  @UI.selectionField: [{ position: 40 }]
   @UI.fieldGroup: [{ position: 110, type: #STANDARD, qualifier: 'QFBasicInfo' }]
   IssueDateStr;
   @EndUserText.label: 'State'
@@ -160,6 +164,7 @@ annotate entity zc_hhdv_head with
   @EndUserText.label: 'SupplierTaxCode'
   @UI.lineItem: [{ position: 260 }]
   @UI.identification: [{ position: 260 }]
+  @UI.selectionField: [{ position: 10 }]
   @UI.fieldGroup: [{ position: 260, type: #STANDARD, qualifier: 'QFBasicInfo' }]
   SupplierTaxCode;
   @EndUserText.label: 'BuyerTaxCode'
@@ -220,6 +225,7 @@ annotate entity zc_hhdv_head with
   @EndUserText.label: 'OriginalInvoiceId'
   @UI.lineItem: [{ position: 380 }]
   @UI.identification: [{ position: 380 }]
+  @UI.selectionField: [{ position: 60 }]
   @UI.fieldGroup: [{ position: 380, type: #STANDARD, qualifier: 'QFBasicInfo' }]
   OriginalInvoiceId;
   @EndUserText.label: 'ListProduct'
@@ -270,6 +276,7 @@ annotate entity zc_hhdv_head with
   @EndUserText.label: 'InvoiceStatus'
   @UI.lineItem: [{ position: 480 }]
   @UI.identification: [{ position: 480 }]
+  @UI.selectionField: [{ position: 70 }]
   @UI.fieldGroup: [{ position: 480, type: #STANDARD, qualifier: 'QFBasicInfo' }]
   InvoiceStatus;
   @EndUserText.label: 'ReturnInv'

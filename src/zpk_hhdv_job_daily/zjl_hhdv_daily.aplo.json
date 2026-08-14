@@ -1,0 +1,14 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "ZJL_HHDV_DAILY",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "subobjects": [
+    {
+      "name": "ZJL_HHDV_DAILY_SUB",
+      "description": "ZJL_HHDV_DAILY_SUB"
+    }
+  ]
+}

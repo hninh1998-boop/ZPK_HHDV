@@ -845,6 +845,7 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
         AND a~IssueDateStr IN @ir_kybaocao
         AND c~Selection IN ( '1','0' )
         AND c~LineNumber <> '0'
+        AND a~ErrorCode IN ('INVOICE_HAS_CODE_APPROVED', 'INVOICE_NO_CODE_APPROVED')
 
         AND b~CompanyCode   IN @ir_companycode
         AND a~InvoiceNumber IN @ir_sohd
@@ -924,6 +925,7 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
     WHERE
         c~Selection IN ( '1','0' )
         AND c~LineNumber <> '0'
+        AND b~ErrorCode IN ('INVOICE_HAS_CODE_APPROVED', 'INVOICE_NO_CODE_APPROVED')
 
         AND a~CompanyCode   IN @ir_companycode
         AND b~InvoiceNumber IN @ir_sohd
@@ -1001,6 +1003,7 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
         a~AdjustmentType = '1'
         AND a~InvoiceStatus = '1'
         AND a~IssueDateStr IN @ir_kybaocao
+        AND a~ErrorCode IN ('INVOICE_HAS_CODE_APPROVED', 'INVOICE_NO_CODE_APPROVED')
 
         AND b~CompanyCode   IN @ir_companycode
         AND a~InvoiceNumber IN @ir_sohd
@@ -1276,9 +1279,7 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
     IF sy-subrc = 0.
       IF ls_tkdu-tkdu CP '6*'.
       ELSE.
-        IF ls_tkdu-debitcreditcode = 'S'.
-          cs_result-DoanhSoTransCur = is_base-doanhsotranscur_raw.
-        ENDIF.
+        cs_result-DoanhSoTransCur = is_base-doanhsotranscur_raw.
       ENDIF.
     ENDIF.
 
@@ -1364,8 +1365,8 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
       CASE WHEN c~OffsettingAccount = '3331001000' THEN b~AccountingDocument ELSE ' ' END AS ChungTu,
       CASE WHEN c~OffsettingAccount = '3331001000' THEN c~OffsettingAccount  ELSE ' ' END AS tk,
       CASE WHEN c~OffsettingAccount = '3331001000' THEN c~GLAccount          ELSE ' ' END AS tkdu,
-      CASE WHEN c~OffsettingAccount = '3331001000' THEN d~PersonFullName     ELSE ' ' END AS UserHachToan,
 
+      d~PersonFullName AS UserHachToan,
       c~AccountingDocumentType,
       c~DebitCreditCode
     INTO TABLE @et_acct_doc.
@@ -1674,6 +1675,7 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
         AND a~ReturnInv <> '1'
         AND c~Selection IN ( '1','0' )
         AND c~LineNumber <> '0'
+        AND a~ErrorCode IN ('INVOICE_HAS_CODE_APPROVED', 'INVOICE_NO_CODE_APPROVED')
 
         AND b~CompanyCode   IN @ir_companycode
         AND a~InvoiceNumber IN @ir_sohd
@@ -2209,6 +2211,7 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
         AND a~IssueDateStr IN @ir_kybaocao
         AND c~Selection IN ( '1','0' )
         AND c~LineNumber <> '0'
+        AND a~ErrorCode IN ('INVOICE_HAS_CODE_APPROVED', 'INVOICE_NO_CODE_APPROVED')
 
         AND b~CompanyCode   IN @ir_companycode
         AND a~InvoiceNumber IN @ir_sohd

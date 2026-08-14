@@ -1,0 +1,16 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "ZJC_HHDV_DAILY",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "className": "ZCL_HHDV_JOB_DAILY"
+  },
+  "parameters": [
+    {
+      "name": "ID"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 @EndUserText.label: 'Custom Entity - HHDV RP'
 @ObjectModel.query.implementedBy: 'ABAP:ZCL_CE_HHDV_RP'
 @Metadata.allowExtensions: true
-define custom entity zce_hhdv_rp
+define root custom entity zce_hhdv_rp
 {
   key InvoiceId        : abap.char(50);  // zi_hhdv_head-TemplateCode
 

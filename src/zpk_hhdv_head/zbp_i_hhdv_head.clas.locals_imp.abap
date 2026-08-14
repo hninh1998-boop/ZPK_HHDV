@@ -168,6 +168,7 @@ CLASS lhc_HHDVHead IMPLEMENTATION.
         AND issue_date_str    <= @lv_to_str
         AND adjustment_type   IN ( '3', '5', '9' )
         AND original_invoice_id <> @space
+        AND error_code IN ('INVOICE_HAS_CODE_APPROVED','INVOICE_NO_CODE_APPROVED')
       INTO TABLE @DATA(lt_invoice_a).
     CHECK lt_invoice_a IS NOT INITIAL.
 

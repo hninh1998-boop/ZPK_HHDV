@@ -12,7 +12,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_hhdv_del_ztab IMPLEMENTATION.
+CLASS ZCL_HHDV_DEL_ZTAB IMPLEMENTATION.
 
 
   METHOD if_oo_adt_classrun~main.

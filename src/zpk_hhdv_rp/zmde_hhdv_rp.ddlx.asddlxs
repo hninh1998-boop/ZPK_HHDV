@@ -113,6 +113,18 @@ annotate entity zce_hhdv_rp with
   @Consumption.filter.hidden: true
   DoanhSo;
 
+  @EndUserText.label: 'Chênh lệch'
+  @UI.lineItem: [{ position: 121 }]
+  @UI.identification: [{ position: 121 }]
+  @Consumption.filter.hidden: true
+  ChenhLech;
+
+  @EndUserText.label: 'Doanh số sau làm tròn'
+  @UI.lineItem: [{ position: 122 }]
+  @UI.identification: [{ position: 122 }]
+  @Consumption.filter.hidden: true
+  DoanhSoSauLamTron;
+
   @EndUserText.label: 'Thuế suất'
   @UI.lineItem: [{ position: 130 }]
   @UI.identification: [{ position: 130 }]

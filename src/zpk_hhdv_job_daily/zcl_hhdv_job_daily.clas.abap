@@ -14,7 +14,9 @@ ENDCLASS.
 
 
 
-CLASS zcl_hhdv_job_daily IMPLEMENTATION.
+CLASS ZCL_HHDV_JOB_DAILY IMPLEMENTATION.
+
+
   METHOD if_apj_rt_exec_object~execute.
     DATA: lv_enddate   TYPE d,
           lv_startdate TYPE d,
@@ -117,31 +119,6 @@ CLASS zcl_hhdv_job_daily IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD if_apj_dt_exec_object~get_parameters.
     et_parameter_def = VALUE #(
       ( selname = 'ID'
@@ -152,36 +129,6 @@ CLASS zcl_hhdv_job_daily IMPLEMENTATION.
         changeable_ind = abap_true )
     ).
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD if_oo_adt_classrun~main.

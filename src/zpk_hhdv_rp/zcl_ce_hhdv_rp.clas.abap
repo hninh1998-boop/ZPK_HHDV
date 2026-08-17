@@ -12,7 +12,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_ce_hhdv_rp IMPLEMENTATION.
+CLASS ZCL_CE_HHDV_RP IMPLEMENTATION.
 
 
   METHOD if_rap_query_provider~select.

@@ -10,7 +10,10 @@ CLASS zcl_hhdv_job_1st DEFINITION
   PRIVATE SECTION.
 ENDCLASS.
 
-CLASS zcl_hhdv_job_1st IMPLEMENTATION.
+
+
+CLASS ZCL_HHDV_JOB_1ST IMPLEMENTATION.
+
 
   METHOD if_apj_rt_exec_object~execute.
     "1. Đọc param của job
@@ -102,6 +105,7 @@ CLASS zcl_hhdv_job_1st IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 
+
   METHOD if_apj_dt_exec_object~get_parameters.
     et_parameter_def = VALUE #(
       ( selname = 'ID'
@@ -112,6 +116,7 @@ CLASS zcl_hhdv_job_1st IMPLEMENTATION.
         changeable_ind = abap_true )
     ).
   ENDMETHOD.
+
 
   METHOD if_oo_adt_classrun~main.
     "Test
@@ -131,5 +136,4 @@ CLASS zcl_hhdv_job_1st IMPLEMENTATION.
         "handle exception
     ENDTRY.
   ENDMETHOD.
-
 ENDCLASS.

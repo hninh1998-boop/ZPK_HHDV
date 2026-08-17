@@ -108,7 +108,9 @@ ENDCLASS.
 
 
 
-CLASS zcl_hhdv_api IMPLEMENTATION.
+CLASS ZCL_HHDV_API IMPLEMENTATION.
+
+
   METHOD api_auth.
     " ==== 1. Tạo HTTP Client qua Communication Arrangement ====
     DATA(lo_web_http_client) = get_destination(
@@ -247,28 +249,6 @@ CLASS zcl_hhdv_api IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD api_invoice.
     "1. Tạo HHTP Client qua Communication Arrangement
     DATA(lo_web_http_client) = get_destination(
@@ -384,30 +364,6 @@ CLASS zcl_hhdv_api IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD get_destination.
     TRY.
         DATA(lo_destination) = cl_http_destination_provider=>create_by_comm_arrangement(
@@ -424,32 +380,6 @@ CLASS zcl_hhdv_api IMPLEMENTATION.
         ev_response = 'lỗi kết nối'.
     ENDTRY.
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD api_first_line.
@@ -502,37 +432,6 @@ CLASS zcl_hhdv_api IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD api_all_lines.
     "1. Chạy API lần 1 để lấy được access_token
     api_auth(
@@ -575,41 +474,6 @@ CLASS zcl_hhdv_api IMPLEMENTATION.
         cv_count_success = cv_count_success
     ).
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD main.
@@ -664,32 +528,6 @@ CLASS zcl_hhdv_api IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD get_access_token.
     IF iv_rc = 200.
       FIND REGEX '"access_token"\s*:\s*"([^"]+)"'
@@ -737,42 +575,4 @@ CLASS zcl_hhdv_api IMPLEMENTATION.
       ENDTRY.
     ENDIF.
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ENDCLASS.

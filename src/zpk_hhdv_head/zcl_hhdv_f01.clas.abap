@@ -42,7 +42,9 @@ ENDCLASS.
 
 
 
-CLASS zcl_hhdv_f01 IMPLEMENTATION.
+CLASS ZCL_HHDV_F01 IMPLEMENTATION.
+
+
   METHOD deserialized_all.
     /ui2/cl_json=>deserialize(
       EXPORTING
@@ -52,27 +54,6 @@ CLASS zcl_hhdv_f01 IMPLEMENTATION.
         data        = es_invoice_all
     ).
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD append_head.
@@ -150,36 +131,6 @@ CLASS zcl_hhdv_f01 IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD deserialized_item.
     DATA(lt_mapping) = VALUE /ui2/cl_json=>name_mappings(
       ( abap = 'ITEM_TOTAL_AMT_WITHOUT_VAT'     json = 'itemTotalAmountWithoutVat' )
@@ -200,36 +151,6 @@ CLASS zcl_hhdv_f01 IMPLEMENTATION.
         data          = es_list_product
     ).
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD append_item.
@@ -304,34 +225,6 @@ CLASS zcl_hhdv_f01 IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD append_ztab.
     "Append data và bảng Z Header và ZItem
     "===== Deserialize response chính =====
@@ -381,43 +274,4 @@ CLASS zcl_hhdv_f01 IMPLEMENTATION.
       cv_count_success += 1.
     ENDIF.
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ENDCLASS.

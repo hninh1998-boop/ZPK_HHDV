@@ -268,11 +268,18 @@ CLASS zcl_ce_hhdv_rp_f01 DEFINITION
         ir_customer       TYPE zcl_ce_hhdv_rp_top=>ry_string
       EXPORTING
         et_result         TYPE zcl_ce_hhdv_rp_top=>tt_result.
+
+    CLASS-METHODS calculate_chenhlech
+      CHANGING
+        ct_result TYPE zcl_ce_hhdv_rp_top=>tt_result.
+
 ENDCLASS.
 
 
 
 CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
+
+
   METHOD main.
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     "1. Build Param
@@ -333,42 +340,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD requested.
     TRY.
         et_filters = io_request->get_filter( )->get_as_ranges( ).
@@ -376,39 +347,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
         "handle exception
     ENDTRY.
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD response.
@@ -558,27 +496,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD build_param.
     LOOP AT it_filters INTO  DATA(ls_filter).
       CASE ls_filter-name.
@@ -645,29 +562,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
       ENDLOOP.
     ENDIF.
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD get_keys.
@@ -796,32 +690,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD get_keys_1.
     "Case 1: filter
     "   zi_hhdv_head: AdjustmentType = 1, InvoiceStatus = null, IssueDateStr = lr_kybaocao
@@ -861,32 +729,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
         c~LineNumber
     INTO TABLE @et_keys_1.
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD get_keys_2.
@@ -941,154 +783,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
         c~LineNumber
     INTO TABLE @et_keys_2.
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  METHOD get_keys_3.
-    "Case 3: filter
-    "   zi_hhdv_head: AdjustmentType = 1, InvoiceStatus = 1, IssueDateStr = lr_kybaocao
-    SELECT FROM zi_hhdv_head AS a
-    INNER JOIN zi_auth_hhdv AS b
-        ON b~SupplierTaxCode = a~SupplierTaxCode
-    LEFT JOIN zi_hhdv_item AS c
-        ON c~InvoiceId = a~InvoiceId
-    FIELDS
-        a~InvoiceId,
-        b~CompanyCode,
-        a~TemplateCode AS KyHieuMauHoaDon,
-        a~InvoiceSeri AS KyHieuHD,
-        a~InvoiceNumber AS SoHD,
-        c~LineNumber AS EINVLineItem
-    WHERE
-        a~AdjustmentType = '1'
-        AND a~InvoiceStatus = '1'
-        AND a~IssueDateStr IN @ir_kybaocao
-        AND a~ErrorCode IN ('INVOICE_HAS_CODE_APPROVED', 'INVOICE_NO_CODE_APPROVED')
-
-        AND b~CompanyCode   IN @ir_companycode
-        AND a~InvoiceNumber IN @ir_sohd
-        AND c~VatPercentage IN @ir_thuesuat
-*        and ... filter field chứng từ
-*        and ... filter field customer
-    GROUP BY
-        a~InvoiceId,
-        b~CompanyCode,
-        a~TemplateCode,
-        a~InvoiceSeri,
-        a~InvoiceNumber,
-        c~LineNumber
-    INTO TABLE @et_keys_3.
-  ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  METHOD get_invoice_key.
-    " KyHieuMauHoaDon : 1 tý tự đầu
-    " KyHieuHD:
-    " #
-    " SoHD: (Không lấy ký tự 0 ở đầu + không lấy dấu -) (chỉ lấy từ số đầu tiên khác 0 và không lấy ký tự khác số)
-    DATA(lv_KyHieuMauHoaDon_clean) = COND string( WHEN iv_kyhieumauhoadon IS NOT INITIAL
-                                                  THEN iv_kyhieumauhoadon+0(1)
-                                                  ELSE '' ).
-    DATA(lv_sohd_clean) = CONV string( iv_sohd ).
-    "Bỏ toàn bộ ký tự không phải số (bao gồm dấu "-")
-    REPLACE ALL OCCURRENCES OF REGEX '[^0-9]' IN lv_sohd_clean WITH ''.
-    "Bỏ các số 0 ở đầu, chỉ giữ lại từ số khác 0 đầu tiên
-    REPLACE ALL OCCURRENCES OF REGEX '^0+' IN lv_sohd_clean WITH ''.
-    rv_invoicekey = |{ lv_KyHieuMauHoaDon_clean }{ iv_kyhieuhd }#{ lv_sohd_clean }|.
-  ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD get_bases.
@@ -1150,36 +844,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD get_keys_result.
     cs_result-InvoiceId       = is_key-invoiceid.
     cs_result-CompanyCode     = is_key-companycode.
@@ -1188,40 +852,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
     cs_result-SoHD            = |{ is_key-sohd ALPHA = OUT }|.
     cs_result-EINVLineItem    = is_key-einvlineitem.
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD get_normal_base_result.
@@ -1233,35 +863,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
     cs_result-InvoiceKey = is_base-invoicekey.
     cs_result-Ngay       = is_base-ngay.
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD get_decimals_base_result.
@@ -1308,33 +909,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD get_acct_doc.
     CHECK it_bases IS NOT INITIAL.
 
@@ -1379,32 +953,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
     DELETE ADJACENT DUPLICATES FROM et_acct_doc COMPARING invoiceid companycode kyhieumauhoadon kyhieuhd sohd einvlineitem.
 
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD get_longtext_fields.
@@ -1481,31 +1029,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD get_acct_doc_result.
     READ TABLE it_acct_doc INTO DATA(ls_acct_doc) WITH KEY  invoiceid       = is_key-invoiceid
                                                             companycode     = is_key-companycode
@@ -1520,37 +1043,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
       cs_result-UserHachToan = ls_acct_doc-userhachtoan.
     ENDIF.
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD get_longtext_result.
@@ -1582,30 +1074,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
       ENDIF.
     ENDIF.
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD get_keys_4.
@@ -1693,45 +1161,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD get_exchange_rate.
     CHECK it_bases IS NOT INITIAL.
 
@@ -1798,37 +1227,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD get_tygia_result.
     READ TABLE it_exchangerate INTO DATA(ls_exchangerate) WITH KEY invoiceid       = is_base-invoiceid
                                                                    companycode     = is_base-companycode
@@ -1841,30 +1239,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
       cs_result-TyGia = is_base-tygia.
     ENDIF.
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD get_ghichu_2.
@@ -1923,38 +1297,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD get_ghichu_result.
     DATA: lv_dieuchinh_text TYPE string.
 
@@ -1994,44 +1336,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
       ENDCASE.
     ENDLOOP.
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD get_ghichu_3.
@@ -2084,36 +1388,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD get_ghichu_4.
     SELECT FROM @it_keys_4 AS a
     LEFT JOIN zi_hhdv_head AS b
@@ -2164,33 +1438,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD get_keys_5.
     SELECT FROM zi_hhdv_head AS a
     INNER JOIN zi_auth_hhdv AS b
@@ -2227,32 +1474,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
         c~LineNumber
     INTO TABLE @et_keys_5.
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD get_ghichu_5.
@@ -2305,35 +1526,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD get_customer.
     CHECK it_bases IS NOT INITIAL.
 
@@ -2371,32 +1563,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD get_customer_result.
     DATA: lv_customer_name TYPE string.
 
@@ -2430,30 +1596,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD get_customer_name.
     DATA: lr_customer TYPE RANGE OF I_AccountingDocumentJournal-Customer.
 
@@ -2480,28 +1622,6 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
     WHERE a~BusinessPartner IN @lr_customer
     INTO TABLE @et_customer_name.
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD build_main.
@@ -2571,42 +1691,9 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD build_result.
     LOOP AT it_keys INTO DATA(ls_key).
-      " Không lấy các line item có AccountingDocumentType = 'DK'
+      "Không lấy các line item có AccountingDocumentType = 'DK'
       READ TABLE it_acct_doc INTO DATA(ls_dk) WITH KEY invoiceid       = ls_key-invoiceid
                                                        companycode     = ls_key-companycode
                                                        kyhieumauhoadon = ls_key-kyhieumauhoadon
@@ -2620,11 +1707,14 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
       ENDIF.
 
       APPEND INITIAL LINE TO et_result ASSIGNING FIELD-SYMBOL(<lfs_result>).
-      "Key fields
+
+      """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+      "1. Key fields
       get_keys_result( EXPORTING is_key    = ls_key
                        CHANGING  cs_result = <lfs_result> ).
 
-      "Base fields
+      """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+      "2. Base fields
       READ TABLE it_bases INTO DATA(ls_base) WITH KEY invoiceid       = ls_key-invoiceid
                                                       companycode     = ls_key-companycode
                                                       kyhieumauhoadon = ls_key-kyhieumauhoadon
@@ -2645,11 +1735,10 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
         get_decimals_base_result( EXPORTING it_acct_doc = it_acct_doc
                                             is_base     = ls_base
                                   CHANGING  cs_result   = <lfs_result> ).
-
-
-
       ENDIF.
 
+      """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+      "3. Others
       "Accounting Doc fields
       get_acct_doc_result( EXPORTING it_acct_doc = it_acct_doc
                                      is_key      = ls_key
@@ -2675,6 +1764,12 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
 
     ENDLOOP.
 
+
+    """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    "4. Handle outside loop
+    "Chênh lệch --> Tính tổng group by của các key theo EINLineItem --> add vào line đầu tiên (EINVLineItem = 1)
+    calculate_chenhlech( CHANGING ct_result = et_result ).
+
     "Filter result
     IF et_result IS NOT INITIAL.
       "Filter chứng từ
@@ -2690,6 +1785,58 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD get_invoice_key.
+    " KyHieuMauHoaDon : 1 tý tự đầu
+    " KyHieuHD:
+    " #
+    " SoHD: (Không lấy ký tự 0 ở đầu + không lấy dấu -) (chỉ lấy từ số đầu tiên khác 0 và không lấy ký tự khác số)
+    DATA(lv_KyHieuMauHoaDon_clean) = COND string( WHEN iv_kyhieumauhoadon IS NOT INITIAL
+                                                  THEN iv_kyhieumauhoadon+0(1)
+                                                  ELSE '' ).
+    DATA(lv_sohd_clean) = CONV string( iv_sohd ).
+    "Bỏ toàn bộ ký tự không phải số (bao gồm dấu "-")
+    REPLACE ALL OCCURRENCES OF REGEX '[^0-9]' IN lv_sohd_clean WITH ''.
+    "Bỏ các số 0 ở đầu, chỉ giữ lại từ số khác 0 đầu tiên
+    REPLACE ALL OCCURRENCES OF REGEX '^0+' IN lv_sohd_clean WITH ''.
+    rv_invoicekey = |{ lv_KyHieuMauHoaDon_clean }{ iv_kyhieuhd }#{ lv_sohd_clean }|.
+  ENDMETHOD.
+
+
+  METHOD get_keys_3.
+    "Case 3: filter
+    "   zi_hhdv_head: AdjustmentType = 1, InvoiceStatus = 1, IssueDateStr = lr_kybaocao
+    SELECT FROM zi_hhdv_head AS a
+    INNER JOIN zi_auth_hhdv AS b
+        ON b~SupplierTaxCode = a~SupplierTaxCode
+    LEFT JOIN zi_hhdv_item AS c
+        ON c~InvoiceId = a~InvoiceId
+    FIELDS
+        a~InvoiceId,
+        b~CompanyCode,
+        a~TemplateCode AS KyHieuMauHoaDon,
+        a~InvoiceSeri AS KyHieuHD,
+        a~InvoiceNumber AS SoHD,
+        c~LineNumber AS EINVLineItem
+    WHERE
+        a~AdjustmentType = '1'
+        AND a~InvoiceStatus = '1'
+        AND a~IssueDateStr IN @ir_kybaocao
+        AND a~ErrorCode IN ('INVOICE_HAS_CODE_APPROVED', 'INVOICE_NO_CODE_APPROVED')
+
+        AND b~CompanyCode   IN @ir_companycode
+        AND a~InvoiceNumber IN @ir_sohd
+        AND c~VatPercentage IN @ir_thuesuat
+*        and ... filter field chứng từ
+*        and ... filter field customer
+    GROUP BY
+        a~InvoiceId,
+        b~CompanyCode,
+        a~TemplateCode,
+        a~InvoiceSeri,
+        a~InvoiceNumber,
+        c~LineNumber
+    INTO TABLE @et_keys_3.
+  ENDMETHOD.
 
 
 
@@ -2697,6 +1844,72 @@ CLASS zcl_ce_hhdv_rp_f01 IMPLEMENTATION.
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  METHOD calculate_chenhlech.
+    DATA: lv_sum_ds_transcur TYPE zce_hhdv_rp-DoanhSoTransCur,
+          lv_sum_ds          TYPE zce_hhdv_rp-DoanhSo,
+          lv_tygia           TYPE zce_hhdv_rp-TyGia.
+
+    CHECK ct_result IS NOT INITIAL.
+
+    LOOP AT ct_result ASSIGNING FIELD-SYMBOL(<lfs_result>)
+        GROUP BY ( invoiceid       = <lfs_result>-InvoiceId
+                   companycode     = <lfs_result>-CompanyCode
+                   kyhieumauhoadon = <lfs_result>-KyHieuMauHoaDon
+                   kyhieuhd        = <lfs_result>-KyHieuHD
+                   sohd            = <lfs_result>-SoHD )
+        ASSIGNING FIELD-SYMBOL(<lfs_group>).
+
+      CLEAR: lv_sum_ds_transcur,
+             lv_sum_ds,
+             lv_tygia.
+
+      "1. Tính tổng Doanh số (Trans Cur) và tổng Doanh số (đã làm tròn) của các line item trong HĐ
+      LOOP AT GROUP <lfs_group> ASSIGNING FIELD-SYMBOL(<lfs_member>).
+        lv_sum_ds_transcur += <lfs_member>-DoanhSoTransCur.
+        lv_sum_ds          += <lfs_member>-DoanhSo.
+        lv_tygia            = <lfs_member>-TyGia.
+      ENDLOOP.
+
+      "2. A = Tổng DoanhSoTransCur * TyGia --> Làm tròn đến 0 sau thập phân sau dấu ,
+      DATA(lv_a) = round( val = lv_sum_ds_transcur * lv_tygia dec = 0 ).
+
+      "3. B (Chênh lệch) = A - Tổng DoanhSo (đã làm tròn)
+      DATA(lv_chenhlech) = CONV zce_hhdv_rp-ChenhLech( lv_a - lv_sum_ds ).
+
+      "4. Gán chênh lệch vào EINVLineItem = 1 (Line đầu của group by)
+      LOOP AT GROUP <lfs_group> ASSIGNING FIELD-SYMBOL(<lfs_member2>).
+        IF <lfs_member2>-EINVLineItem     = '1'.
+          <lfs_member2>-ChenhLech         = lv_chenhlech.
+          <lfs_member2>-DoanhSoSauLamTron = <lfs_member2>-DoanhSo + lv_chenhlech.
+        ELSE.
+          <lfs_member2>-ChenhLech         = 0.
+          <lfs_member2>-DoanhSoSauLamTron = <lfs_member2>-DoanhSo.
+        ENDIF.
+
+        "4.1. Tính lại field tổng cộng
+        <lfs_member2>-TongCong = <lfs_member2>-DoanhSoSauLamTron - <lfs_member2>-ThueGTGT.
+      ENDLOOP.
+    ENDLOOP.
+  ENDMETHOD.
 
 
 

@@ -12,7 +12,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_hhdv_job_chk IMPLEMENTATION.
+CLASS ZCL_HHDV_JOB_CHK IMPLEMENTATION.
 
 
   METHOD if_oo_adt_classrun~main.

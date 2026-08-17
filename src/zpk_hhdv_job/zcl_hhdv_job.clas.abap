@@ -59,7 +59,10 @@ CLASS zcl_hhdv_job DEFINITION
 
 ENDCLASS.
 
-CLASS zcl_hhdv_job IMPLEMENTATION.
+
+
+CLASS ZCL_HHDV_JOB IMPLEMENTATION.
+
 
   METHOD if_apj_rt_exec_object~execute.
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -152,34 +155,6 @@ CLASS zcl_hhdv_job IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD if_apj_dt_exec_object~get_parameters.
     et_parameter_def = VALUE #(
       ( selname = 'ID'
@@ -208,34 +183,6 @@ CLASS zcl_hhdv_job IMPLEMENTATION.
         changeable_ind = abap_true )
     ).
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD if_oo_adt_classrun~main.
@@ -278,29 +225,6 @@ CLASS zcl_hhdv_job IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD get_params.
     LOOP AT it_parameters INTO DATA(ls_param).
       CASE ls_param-selname.
@@ -324,31 +248,6 @@ CLASS zcl_hhdv_job IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD get_log.
     TRY.
         ro_log = cl_bali_log=>create( ).
@@ -367,31 +266,6 @@ CLASS zcl_hhdv_job IMPLEMENTATION.
         "handle exception
     ENDTRY.
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD get_date_next.
@@ -415,30 +289,6 @@ CLASS zcl_hhdv_job IMPLEMENTATION.
       ev_enddate_next = iv_enddate.
     ENDIF.
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   METHOD schedule_next_job.
@@ -475,38 +325,6 @@ CLASS zcl_hhdv_job IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD save_job_log.
     TRY.
         co_log->add_item(
@@ -529,33 +347,6 @@ CLASS zcl_hhdv_job IMPLEMENTATION.
   ENDMETHOD.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   METHOD save_compcode_log.
     CHECK iv_total_rows <> 0.
     TRY.
@@ -568,28 +359,4 @@ CLASS zcl_hhdv_job IMPLEMENTATION.
         "handle exception
     ENDTRY.
   ENDMETHOD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ENDCLASS.

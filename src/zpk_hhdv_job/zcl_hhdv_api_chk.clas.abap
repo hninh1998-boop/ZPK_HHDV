@@ -7,7 +7,12 @@ CLASS zcl_hhdv_api_chk DEFINITION
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
-CLASS zcl_hhdv_api_chk IMPLEMENTATION.
+
+
+
+CLASS ZCL_HHDV_API_CHK IMPLEMENTATION.
+
+
   METHOD if_oo_adt_classrun~main.
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     "API Auth/Login
